@@ -1,12 +1,10 @@
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXParseException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.awt.*;
 import java.io.File;
 
 /**
@@ -17,6 +15,7 @@ public class Map {
     public Tile[][] tiles;
     private final int MAP_WIDTH = 100;
     private final int MAP_HEIGHT = 50;
+    private final String DEFAULT_MAP = "./src/res/maps/default_map.xml";
 
     public Map(){
         initMapXML();
@@ -48,11 +47,13 @@ public class Map {
 
     private void initMapXML(){
         try{
+            // Get the xml filepath string ensuring file separators are specific to the use's OS.
+            String filepath = DEFAULT_MAP.replaceAll("\\\\|/", "\\"+System.getProperty("file.separator"));
+
             // Create a document from the xml file
-            // TODO: Use relative path
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document doc = docBuilder.parse(new File(".\\src\\res\\maps\\default_map.xml"));
+            Document doc = docBuilder.parse(new File(filepath));
 
             // Normalize
             doc.getDocumentElement().normalize();
